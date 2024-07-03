@@ -29,7 +29,7 @@ const LookUp = () => {
 
             
 
-                <div className="p-10">
+                <div className="p-2">
                     
                     <div>
                         <h2 className="font-bold text-xl">Look up Order</h2>
@@ -45,7 +45,7 @@ const LookUp = () => {
                     <div className="my-4 ">
                         <h6 className="text-sm text-gray-800">Email Address</h6>
                         <div className="pl-6 py-4 border text-left border-black">
-                            <input className="w-full outline-none" ref={emailRef} type="text" placeholder="enter your email" required/>
+                            <input className="w-full outline-none" ref={emailRef} type="text" placeholder="Enter your email" required/>
                         </div>
                     </div>
 
