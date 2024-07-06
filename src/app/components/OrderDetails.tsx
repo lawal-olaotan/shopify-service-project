@@ -27,7 +27,6 @@ const OrderDetails: React.FC<OrderProps> = ({Details}) => {
     const router = useRouter()
 
     useEffect(()=> {
-        console.log(Details)
         const currentColor = value.split(' / ')[1]
         setActiveColor(currentColor)
     },[value,Details])
@@ -52,9 +51,6 @@ const OrderDetails: React.FC<OrderProps> = ({Details}) => {
 
     }
 
-    
-
-    
     return (
         (
             orderCreated ? (
@@ -107,8 +103,6 @@ const OrderDetails: React.FC<OrderProps> = ({Details}) => {
         )
         
     )
-
-
 }
 
 

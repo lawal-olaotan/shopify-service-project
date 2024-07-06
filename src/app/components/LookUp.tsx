@@ -49,7 +49,7 @@ const LookUp = () => {
                         </div>
                     </div>
 
-                    <button onClick={processOrderNo} className="py-4 px-24 bg-red-500 text-white my-4 rounded-md w-full">Lookup Order No</button>
+                    <button onClick={processOrderNo} className="py-4 px-24 bg-red-500 text-white my-4 rounded-md w-full">Lookup Order</button>
 
                     
                 </div>
