@@ -45,10 +45,8 @@ const OrderDetails: React.FC<OrderProps> = ({Details}) => {
         }
         const isOrderCreated = await processOrder(orderData,'order')
 
-        if(!isOrderCreated.ok) router.push('/')
-           
+        if(!isOrderCreated.ok) return router.push('/')
         setOrderStatus(true);
-
     }
 
     return (
