@@ -13,15 +13,21 @@
   },
   "dependencies": {
     "@shopify/admin-api-client": "^1.0.0",
+    "@skiff-org/skiff-crypto": "^1.0.3",
+    "agenda": "^5.0.0",
     "body-parser": "^1.20.2",
+    "bull": "^4.15.1",
+    "bullmq": "^5.10.3",
     "cors": "^2.8.5",
+    "crypto-js": "^4.0.0",
     "dotenv": "^16",
     "express": "^4.19.2",
+    "ioredis": "^5.4.1",
     "morgan": "^1.10.0",
     "nodemailer": "^6.9.14",
     "redis": "^4.6.14",
     "resend": "^3.4.0",
-    "shopify-api-node": "^3.13.1",
+    "simple-crypto-js": "^3.0.1",
     "supertest": "^7.0.0"
   },
   "devDependencies": {

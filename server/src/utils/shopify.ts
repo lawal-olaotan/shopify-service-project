@@ -13,7 +13,6 @@ export const UseShopify = () => {
             accessToken: process.env.SHOPIFY_TOKEN as string,
     })
     
-
     const getProduct = async (productId:number)  => {
         try{
             const productPayload = await shopify.get(`products/${productId}`)
@@ -65,8 +64,5 @@ export const UseShopify = () => {
         getProduct,
         createOrder
     }
-        
-
-    
 
 }

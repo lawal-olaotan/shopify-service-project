@@ -54,5 +54,7 @@ export interface LineItem {
 export interface MailItem{
     email:string
     name:string
-    orderId:number
+    orderId:number | string
+    title:string
+    template:string
 }

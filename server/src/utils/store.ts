@@ -7,7 +7,7 @@ export const client = createClient({
     password:process.env.REDIS_PASS,
     socket:{
         host:process.env.REDIS_CLIENT,
-        port:13313
+        port:11516
     }
 
 })
