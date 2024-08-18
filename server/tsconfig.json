@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    // Enable latest features
+    "target": "ES6",
+    "module": "commonJS",
+    "sourceMap": true,
+    "moduleDetection": "force",
+    "allowJs": true,
+    "esModuleInterop": true,    
+
+    // Bundler mode
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+
+    // Best practices
+    "strict":true,
+    "skipLibCheck": true,
+
+    // Some stricter flags (disabled by default)
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noPropertyAccessFromIndexSignature": false,
+    "baseUrl": "/src", 
+    "outDir": "/build",
+    "rootDir": ".",
+    "paths":{
+      "@controllers/*":["/controllers/*.ts"],
+      "@helpers/*":["/helpers/*.ts"],
+      "@routes/*": ["/routes/*.ts"],
+      "@tests/*":["/tests/*ts"]
+    },
+    "forceConsistentCasingInFileNames": true,
+
+  },
+  "include": ["src/**/*", "tests/**/*.ts**/*.ts"],
+  "exclude": ["node_modules"]
+}
