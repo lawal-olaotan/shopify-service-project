@@ -51,11 +51,7 @@ const createFollowUpEmailQueue = (emailPayload:any) => {
     return {
         name:'email',
         data:followUpPayload,
-        opts:{repeat: { cron:'0 0 1-31/3 * * '}, 
-        removeOnComplete:true,
-        removeOnFail:true,
-        priority:2
-        }
+        opts:{delay:(60 * 60 * 1000 * (24 * 10)), removeOnComplete:true, removeOnFail:true, priority:1}, 
    }
 }
 
