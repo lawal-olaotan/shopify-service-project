@@ -51,6 +51,35 @@ export interface LineItem {
     discount_allocations: any[]; // Assuming discount_allocations can be any type of array
 }
 
+export interface customerOrderDetails {
+    order_number: number;
+    email: string;
+    shipping_address: Address;
+    billing_address:Address;
+    line_items: LineItem[];
+    customer_id:number
+    customer_name:string
+}
+
+
+export interface Address {
+    first_name:string,
+    address1: string,
+    phone: string,
+    city: string,
+    zip: string,
+    province: string;
+    country: string;
+    last_name: string,
+    address2?: string|null ,
+    company: string|null,
+    latitude: null | string,
+    longitude: null | string,
+    "name": string,
+    "country_code": string,
+    "province_code": string
+}
+
 export interface MailItem{
     email:string
     name:string

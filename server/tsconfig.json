@@ -25,6 +25,8 @@
     "rootDir": ".",
     "paths":{
       "@controllers/*":["/controllers/*.ts"],
+      "@services/*":["/services/*.ts"],
+      "@interface/*":["interface/*.ts"],
       "@helpers/*":["/helpers/*.ts"],
       "@routes/*": ["/routes/*.ts"],
       "@tests/*":["/tests/*ts"]

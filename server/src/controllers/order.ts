@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
-import { client} from '../utils/store'
-import { UseShopify} from '../utils/shopify'
+// import { client} from '../utils/store'
+import { UseShopify} from '../services/shopify.ts'
 import dotenv from "dotenv"
 dotenv.config();
 import CryptoUtil from "../utils/crypto";
+import {getCustomerOrderByOrderId, removeCustomerByOrderId} from "../services/store.ts";
+import {customerOrderDetails} from "../interface/order.ts";
 
 
 /**
@@ -44,16 +46,13 @@ export const getOrderItem = async (request:Request,response:Response) => {
 export const createOrder = async (request:Request,response:Response) => {
     try{
         const shopify = UseShopify()
-        const crypto = CryptoUtil();
         const {size, color, orderId }  = request.body;
 
-        const order_number = crypto.decrypt(orderId as string)
-        let orderItem = await client.get(`${order_number}`) as any
-        orderItem = JSON.parse(orderItem);
+        let orderItem = await checkOrderItem(orderId as string)
 
         if(!orderItem) return response.status(400).json({ok:false})
 
-        const { line_items, shipping_address, customer, billing_address} = orderItem
+        const { line_items, shipping_address, customer_id, billing_address} = orderItem as customerOrderDetails;
 
         const {product_id}= line_items[0]
         const productPayload = await shopify.getProduct(product_id)
@@ -63,8 +62,7 @@ export const createOrder = async (request:Request,response:Response) => {
         // TODO: change parameter postion
         const variantId = findVariantId(variants,size,color);
 
-        await shopify.createOrder(billing_address,shipping_address,customer.id,variantId)
-        .then(async()=> {await client.del(`${order_number}`)})
+        await shopify.createOrder(billing_address,shipping_address,customer_id,variantId).then(async()=> {await removeCustomerByOrderId(orderId)})
 
         return response.status(200).json({ok:true});
     
@@ -77,8 +75,10 @@ export const lookUp = async (request:Request,response:Response) => {
     try{
 
         const {orderId, orderEmail}  = request.body;
+        const crypto = CryptoUtil();
+        const order_number = crypto.decrypt(orderId as any);
         // TODO: decrypt orderId to lookup for order
-        let orderItem = await client.get(orderId) as any 
+        let orderItem = await checkOrderItem(order_number.toString());
         if(!orderItem) return response.status(400).json({ok:false})
 
         const {email} = JSON.parse(orderItem);
@@ -99,12 +99,13 @@ const findVariantId = (variants:any, size:string,color:string) => {
 
 const checkOrderItem = async(orderId:string) => {
     const crypto = CryptoUtil();
-    const order_number = crypto.decrypt(orderId as any)
-    let orderItem = await client.get(`${order_number}`) as any
+    const order_number = crypto.decrypt(orderId as any);
+
+    let orderItem = await getCustomerOrderByOrderId(Number(order_number));
     if(!orderItem.length) return false
 
     return JSON.parse(orderItem);
-        
+
 }
 
 const checkVariant = (variantOption:string, userOption:string) => variantOption === userOption

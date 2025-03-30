@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer'
 import fs from 'fs'
 import dotenv from "dotenv"
-import { MailItem } from '../interface';
+import { MailItem } from '../interface/order.ts';
 dotenv.config();
 
 

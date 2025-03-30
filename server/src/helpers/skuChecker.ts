@@ -1,4 +1,4 @@
-import { LineItem } from "../interface";
+import { LineItem } from "../interface/order.ts";
 import dotenv from "dotenv"
 dotenv.config();
 
