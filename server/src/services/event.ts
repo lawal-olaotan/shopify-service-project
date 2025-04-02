@@ -1,7 +1,6 @@
-import {SchedulerClient, CreateScheduleCommand, CreateScheduleCommandInput} from "@aws-sdk/client-scheduler";
+import {SchedulerClient, CreateScheduleCommand, CreateScheduleCommandInput, DeleteScheduleCommand} from "@aws-sdk/client-scheduler";
 import { customerOrderDetails  } from '../interface/order'
 import { awsAuthObject} from "./aws";
-import {saveCustomerOrderInfo} from "./store.ts";
 
 
 const eventBridgeClient = new SchedulerClient(awsAuthObject);
@@ -50,6 +49,5 @@ export const createEmailSchedule = async(eventData:customerOrderDetails) => {
             console.error(err)
         }
     }
-
-    await saveCustomerOrderInfo(eventData);
+    return true;
 }

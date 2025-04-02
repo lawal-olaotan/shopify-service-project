@@ -59,6 +59,7 @@ export interface customerOrderDetails {
     line_items: LineItem[];
     customer_id:number
     customer_name:string
+    templateSent:string
 }
 
 

@@ -1,6 +1,5 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import {DeleteCommand, DynamoDBDocumentClient, QueryCommand} from "@aws-sdk/lib-dynamodb";
-import { PutCommand } from "@aws-sdk/lib-dynamodb";
+import {DeleteCommand, PutCommand, DynamoDBDocumentClient, QueryCommand, UpdateCommand} from "@aws-sdk/lib-dynamodb";
 import { customerOrderDetails } from "../interface/order"
 import { awsAuthObject } from "./aws"
 import dotenv from "dotenv"
@@ -74,5 +73,28 @@ export const getCustomerDetailsByEncryptionId = async(orderId:string) => {
 
  return orderItem;
 
+}
+
+export const updateUserEmailTemplate = async(orderNumber:number, template:string) => {
+    const params = {
+        TableName:TableName,
+        Key: { order_number: orderNumber }, // Primary key
+        UpdateExpression: "SET #templateSent = :newValue",
+        ExpressionAttributeNames: {
+            "#templateSent": "templateSent",
+        },
+        ExpressionAttributeValues: {
+            ":newValue": template,
+        },
+        ReturnValues: "UPDATED_NEW",
+    };
+
+    try {
+        const command = new UpdateCommand(params as any);
+        const response = await dbDocClient.send(command);
+        console.log("Item updated:", response.Attributes);
+    } catch (error) {
+        console.error("Error updating item:", error);
+    }
 }
 

@@ -52,7 +52,7 @@ export const createOrder = async (request:Request,response:Response) => {
 
         if(!orderItem) return response.status(400).json({ok:false})
 
-        const { line_items, shipping_address, customer_id, billing_address} = orderItem as customerOrderDetails;
+        const { order_number, line_items, shipping_address, customer_id, billing_address, templateSent} = orderItem as customerOrderDetails;
 
         const {product_id}= line_items[0]
         const productPayload = await shopify.getProduct(product_id)
@@ -62,7 +62,14 @@ export const createOrder = async (request:Request,response:Response) => {
         // TODO: change parameter postion
         const variantId = findVariantId(variants,size,color);
 
-        await shopify.createOrder(billing_address,shipping_address,customer_id,variantId).then(async()=> {await removeCustomerByOrderId(orderId)})
+        await shopify.createOrder(billing_address,shipping_address,customer_id,variantId).then(
+
+            async()=> {
+                await removeCustomerByOrderId(orderId);
+                if(templateSent === 'confirmation'){
+                    const scheduledName = `followup-email-${order_number}`
+                }
+            })
 
         return response.status(200).json({ok:true});
     
@@ -75,15 +82,11 @@ export const lookUp = async (request:Request,response:Response) => {
     try{
 
         const {orderId, orderEmail}  = request.body;
-        const crypto = CryptoUtil();
-        const order_number = crypto.decrypt(orderId as any);
-        // TODO: decrypt orderId to lookup for order
-        let orderItem = await checkOrderItem(order_number.toString());
-        if(!orderItem) return response.status(400).json({ok:false})
+        const orderDetails = await checkOrderItem(orderId as string)
+        if(!orderDetails) return response.status(400).json({ok:false})
 
-        const {email} = JSON.parse(orderItem);
+        const {email} = orderDetails
         if(email !== orderEmail) return response.status(400).json({ok:false})
-
         response.status(200).json({ok:true});
     }catch(error){
         console.log(error)

@@ -1,11 +1,9 @@
 import { Request, Response } from "express";
 import { Mailer } from "../helpers/sendEmail";
 import dotenv from "dotenv"
-
-import { extractItemsWithoutSize } from "../helpers/skuChecker"
-// import { scheduleEmails } from "../utils/bull";
 import CryptoUtil from "../utils/crypto";
-import {getCustomerDetailsByEncryptionId, getCustomerOrderByOrderId, saveCustomerOrderInfo} from '../services/store'
+import { getCustomerOrderByOrderId, updateUserEmailTemplate
+} from '../services/store'
 
 dotenv.config();
 /**
@@ -22,15 +20,16 @@ export const scheduleEmail = async (request:Request,response:Response) => {
 
         const title = template === 'confirmation' ? '🌟 Your Synqlux Ring Sizing Kit is on its Way!🌟' : "🌟 Have You Received Your Sizing Kit Yet? Let's Get Your Perfect Fit! 🌟";
 
-
-
         const cryptoUtil = CryptoUtil();
         const orderId = cryptoUtil.encrypt(order_number);
         // schedule email to client so they can update ringsize
         const emailPayload = {email,name,orderId,title,template};
 
         const mailer = Mailer()
-        mailer.sendEmail(emailPayload)
+        mailer.sendEmail(emailPayload);
+        await updateUserEmailTemplate(order_number,template );
+
+
 
         response.status(200).json({ok:true});
 

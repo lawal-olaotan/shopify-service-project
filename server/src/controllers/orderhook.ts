@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { extractItemsWithoutSize } from "../helpers/skuChecker"
 import {createEmailSchedule} from "../services/event.ts";
 import dotenv from "dotenv"
+import {saveCustomerOrderInfo} from "../services/store.ts";
 
 
 
@@ -30,9 +31,15 @@ export const orderController = async (request:Request,response:Response) => {
             billing_address,
             line_items,
             customer_id:customer.id,
-            customer_name:customer.first_name
+            customer_name:customer.first_name,
+            templateSent:''
         }
-        await createEmailSchedule(customerOrder);
+        const areEmailsScheduled = await createEmailSchedule(customerOrder);
+
+        if(areEmailsScheduled){
+            await saveCustomerOrderInfo(customerOrder);
+        }
+
         response.status(200).json({ok:true});
 
     }catch(error){
