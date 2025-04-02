@@ -6,6 +6,7 @@ dotenv.config();
 import CryptoUtil from "../utils/crypto";
 import {getCustomerOrderByOrderId, removeCustomerByOrderId} from "../services/store.ts";
 import {customerOrderDetails} from "../interface/order.ts";
+import {deleteSchedule} from "../services/event.ts";
 
 
 /**
@@ -68,6 +69,7 @@ export const createOrder = async (request:Request,response:Response) => {
                 await removeCustomerByOrderId(orderId);
                 if(templateSent === 'confirmation'){
                     const scheduledName = `followup-email-${order_number}`
+                    await deleteSchedule(scheduledName);
                 }
             })
 

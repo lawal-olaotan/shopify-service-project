@@ -51,3 +51,16 @@ export const createEmailSchedule = async(eventData:customerOrderDetails) => {
     }
     return true;
 }
+
+
+export const deleteSchedule = async(scheduleName: string) => {
+    const params = { Name: scheduleName };
+
+    try {
+        const command = new DeleteScheduleCommand(params);
+        await eventBridgeClient.send(command);
+        console.log(`Schedule "${scheduleName}" deleted successfully.`);
+    } catch (error) {
+        console.error(`Error deleting schedule "${scheduleName}":`, error);
+    }
+}
