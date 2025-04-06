@@ -1,5 +1,6 @@
-import { SimpleCrypto } from "simple-crypto-js"
+import {SimpleCrypto} from "simple-crypto-js"
 import dotenv from "dotenv"
+
 dotenv.config();
 
 const CryptoUtil = () => {
@@ -11,8 +12,7 @@ const CryptoUtil = () => {
 
     const encrypt = (message:string) => {
         const crypto = init();
-        const crypticText = crypto.encrypt(message)
-        return crypticText
+        return crypto.encrypt(message)
     }
 
     const decrypt = (crypticText:string) => {

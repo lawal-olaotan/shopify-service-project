@@ -10,9 +10,10 @@ const eventBridgeClient = new SchedulerClient(awsAuthObject);
 export const createEmailSchedule = async(eventData:customerOrderDetails) => {
 
     try{
+        const { CONFIRMATION_EMAIL_WAIT_HRS, FOLLOWUP_EMAIL_WAIT_HRS} = process.env
         let now = new Date();
-        const firstEmailTime = new Date(now.setHours(now.getHours()+ 3)).toISOString().replace(/\.\d{3}Z$/,'');
-        const secondEmailTime = new Date(now.setHours(now.getHours()+ 75)).toISOString().replace(/\.\d{3}Z$/,'');
+        const firstEmailTime = new Date(now.setHours(now.getHours() + Number(CONFIRMATION_EMAIL_WAIT_HRS))).toISOString().replace(/\.\d{3}Z$/,'');
+        const secondEmailTime = new Date(now.setHours(now.getHours()+ Number(FOLLOWUP_EMAIL_WAIT_HRS))).toISOString().replace(/\.\d{3}Z$/,'');
 
         console.log(firstEmailTime);
         console.log(secondEmailTime);

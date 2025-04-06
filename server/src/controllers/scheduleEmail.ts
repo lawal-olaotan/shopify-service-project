@@ -19,10 +19,10 @@ export const scheduleEmail = async (request:Request,response:Response) => {
 
         const title = template === 'confirmation' ? '🌟 Your Synqlux Ring Sizing Kit is on its Way!🌟' : "🌟 Have You Received Your Sizing Kit Yet? Let's Get Your Perfect Fit! 🌟";
 
-        const cryptoUtil = CryptoUtil();
-        const orderId = cryptoUtil.encrypt(order_number);
+        // const cryptoUtil = CryptoUtil();
+        // const orderId = cryptoUtil.encrypt(order_number);
         // schedule email to client so they can update ringsize
-        const emailPayload = {email,name,orderId,title,template};
+        const emailPayload = {email,name,orderId:order_number,title,template};
 
         const mailer = Mailer()
         mailer.sendEmail(emailPayload);
