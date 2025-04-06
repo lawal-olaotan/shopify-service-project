@@ -3,7 +3,7 @@ import OrderDetails from './components/OrderDetails'
 import LookUp from './components/LookUp'
 
 async function fetchOrderNumber(orderId: string) {
-  const serviceUrl = process.env.SERVICE_URL;
+  const serviceUrl = process.env.SERVICE_URL as string || 'http://localhost:8080';
   const response = await fetch(`${serviceUrl}/order?orderId=${orderId}`, {
     cache: 'no-store',
     next: { revalidate: 0 }

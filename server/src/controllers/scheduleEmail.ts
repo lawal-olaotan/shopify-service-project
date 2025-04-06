@@ -15,7 +15,6 @@ export const scheduleEmail = async (request:Request,response:Response) => {
     try{
         const { order_number, email,name,template} = request.body;
         const resultItems = await getCustomerOrderByOrderId(order_number);
-
         if(!resultItems) return response.status(200).json({ok:true})
 
         const title = template === 'confirmation' ? '🌟 Your Synqlux Ring Sizing Kit is on its Way!🌟' : "🌟 Have You Received Your Sizing Kit Yet? Let's Get Your Perfect Fit! 🌟";
@@ -28,8 +27,6 @@ export const scheduleEmail = async (request:Request,response:Response) => {
         const mailer = Mailer()
         mailer.sendEmail(emailPayload);
         await updateUserEmailTemplate(order_number,template );
-
-
 
         response.status(200).json({ok:true});
 

@@ -16,7 +16,7 @@ const LookUp = () => {
             orderId:orderRef?.current?.value,
             orderEmail:emailRef?.current?.value
         }
-        const isOrderValid = await processOrder(orderInformation,'order/lookUp') as any
+        const isOrderValid = await processOrder(orderInformation,'order/lookUp');
         if(isOrderValid.ok){
             router.push('/?orderId='+orderRef?.current?.value)
         }

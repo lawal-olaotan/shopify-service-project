@@ -8,7 +8,7 @@ dotenv.config();
 
 const dbClient = new DynamoDBClient(awsAuthObject);
 const dbDocClient = DynamoDBDocumentClient.from(dbClient);
-const TableName = process.env.TABLE_NAME
+const TableName = process.env.DB_NAME
 
 export const saveCustomerOrderInfo = async(orderDetails:customerOrderDetails) => {
 
@@ -40,9 +40,9 @@ export const getCustomerOrderByOrderId = async(order_number:number) => {
 
     try {
         const result = await dbDocClient.send(params);
-        const dbItems = result.Items;
+        const dbItems =  result.Items;
         if(!dbItems.length) return false;
-        return JSON.parse(dbItems[0].toString());
+        return dbItems[0];
     } catch (error) {
         console.error("Error querying item:", error);
     }

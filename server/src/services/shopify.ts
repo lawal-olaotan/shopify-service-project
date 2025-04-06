@@ -55,7 +55,7 @@ export const UseShopify = () => {
             const orderResponse = await shopify.post('orders',{data:{order: order}})
             if(orderResponse.ok) return await orderResponse.json()
         }catch(error){
-            console.log(error)
+            console.log(error.message)
             throw new Error()
         }
     }

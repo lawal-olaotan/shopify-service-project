@@ -6,7 +6,7 @@ import order from "./routes/order";
 import email from "./routes/email";
 import cors from 'cors'
 import morgan from 'morgan'
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 
 dotenv.config(); 
 

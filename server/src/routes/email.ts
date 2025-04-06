@@ -7,7 +7,7 @@ import {scheduleEmail} from "../controllers/scheduleEmail.ts";
  */
 const router = express.Router();
 
-router.post('/email',scheduleEmail)
+router.post('/',scheduleEmail)
 
 
 export default router

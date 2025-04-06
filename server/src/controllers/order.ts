@@ -28,8 +28,8 @@ export const getOrderItem = async (request:Request,response:Response) => {
         const { image, options } = productPayload.product
 
         //TODO: change this 
-        const size = options[1].values
-        const color = options[0].values
+        const size = options[0].values
+        const color = options[1].values
 
         // // get product variance 
         response.status(200).json({image:image.src,size,color,value:variant_title,title,orderId}); 
@@ -56,17 +56,16 @@ export const createOrder = async (request:Request,response:Response) => {
         const { order_number, line_items, shipping_address, customer_id, billing_address, templateSent} = orderItem as customerOrderDetails;
 
         const {product_id}= line_items[0]
-        const productPayload = await shopify.getProduct(product_id)
-
+        const productPayload = await shopify.getProduct(product_id);
         const {variants} = productPayload.product; 
 
-        // TODO: change parameter postion
-        const variantId = findVariantId(variants,size,color);
+        // TODO: change parameter position
+        const variantId = findVariantId(variants,color,size);
 
         await shopify.createOrder(billing_address,shipping_address,customer_id,variantId).then(
 
             async()=> {
-                await removeCustomerByOrderId(orderId);
+                await removeCustomerByOrderId(Number(orderId));
                 if(templateSent === 'confirmation'){
                     const scheduledName = `followup-email-${order_number}`
                     await deleteSchedule(scheduledName);
@@ -76,6 +75,7 @@ export const createOrder = async (request:Request,response:Response) => {
         return response.status(200).json({ok:true});
     
     }catch(error){
+        console.log(error.message);
         response.status(500).json({ok:false})
     }
 }
@@ -84,7 +84,7 @@ export const lookUp = async (request:Request,response:Response) => {
     try{
 
         const {orderId, orderEmail}  = request.body;
-        const orderDetails = await checkOrderItem(orderId as string)
+        const orderDetails = await getCustomerOrderByOrderId(Number(orderId));
         if(!orderDetails) return response.status(400).json({ok:false})
 
         const {email} = orderDetails
@@ -103,13 +103,17 @@ const findVariantId = (variants:any, size:string,color:string) => {
 }
 
 const checkOrderItem = async(orderId:string) => {
-    const crypto = CryptoUtil();
-    const order_number = crypto.decrypt(orderId as any);
+     const ORDER_ID_LENGTH = 4;
+     let order_number = orderId;
+    if(orderId.length >  ORDER_ID_LENGTH){
+        const crypto = CryptoUtil();
+        order_number = crypto.decrypt(orderId as any) as string;
+    }
 
     let orderItem = await getCustomerOrderByOrderId(Number(order_number));
-    if(!orderItem.length) return false
+    if(!orderItem) return false
 
-    return JSON.parse(orderItem);
+    return orderItem;
 
 }
 
